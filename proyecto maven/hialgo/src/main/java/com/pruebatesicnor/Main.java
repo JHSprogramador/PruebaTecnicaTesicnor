@@ -35,8 +35,8 @@ public class Main {
                 if (nombrePelicula.equalsIgnoreCase("salir")) {
                     break;
                 }
-                if (ComprobarPelicula(nombrePelicula, 0)) {
-                    Movie movie = getMovieInfo(nombrePelicula, 0);
+                if (ComprobarPelicula(nombrePelicula)) {
+                    Movie movie = getMovieInfo(nombrePelicula);
                     GuardarPeliculasEnDB(movie);
                     PrintePeliculas(movie);
                 } else {
@@ -81,7 +81,7 @@ public class Main {
     public static boolean ComprobarPelicula(String movieTitle) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(API_URL + "?apikey=" + API_KEY + "&t=" + movieTitle.replace(" ", "+")))
+                .uri(new URI(API_URL + "?apikey=" + API_KEY + "&t=" + movieTitle))
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
