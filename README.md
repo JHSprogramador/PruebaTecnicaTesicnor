@@ -11,7 +11,7 @@ Pasos:
 
 **Clonar el repositorio completo de Git:**
 Bash
-git clone https://github.com/JHSprogramador/PruebaTecnicaTesicnor.git
+<<"git clone https://github.com/JHSprogramador/PruebaTecnicaTesicnor.git">>
 Usa el código con precaución.
 content_copy
 Compilar el proyecto:
