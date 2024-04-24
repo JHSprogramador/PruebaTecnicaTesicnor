@@ -22,80 +22,84 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Scanner readLine = new Scanner(System.in);
 
-        System.out.println("Seleccione una opción:");
-        System.out.println("1. Agregar películas por nombre");
-        System.out.println("2. Agregar todas las películas de Harry Potter");
-        System.out.println("3. Agregar películas por nombre y rango de años");
-        System.out.println("4. Mostrar todas las películas");
-        System.out.println("5. Filtrar películas por título");
-        System.out.println("6. Salir");
-        int opcion = readLine.nextInt();
+        while (true) {
+            System.out.println("Seleccione una opción:");
+            System.out.println("1. Agregar películas por nombre");
+            System.out.println("2. Agregar todas las películas de Harry Potter");
+            System.out.println("3. Agregar películas por nombre y rango de años");
+            System.out.println("4. Mostrar todas las películas");
+            System.out.println("5. Filtrar películas por título");
+            System.out.println("6. Salir");
+            int opcion = readLine.nextInt();
 
-        readLine.nextLine(); // consume the newline
+            readLine.nextLine(); // consume the newline
 
-        switch (opcion) {
-            case 1:
-                String nombrePelicula = "";
-                while (true) {
-                    System.out.println("Ingrese el nombre de la pelicula (o 'salir' para terminar): ");
-                    nombrePelicula = readLine.nextLine();
-                    if (nombrePelicula.equalsIgnoreCase("salir")) {
-                        break;
+            switch (opcion) {
+                case 1:
+                    String nombrePelicula = "";
+                    while (true) {
+                        System.out.println("Ingrese el nombre de la pelicula (o 'salir' para terminar): ");
+                        nombrePelicula = readLine.nextLine();
+                        if (nombrePelicula.equalsIgnoreCase("salir")) {
+                            break;
+                        }
+                        if (ComprobarPelicula(nombrePelicula)) {
+                            Movie movie = getMovieInfo(nombrePelicula);
+                            GuardarPeliculasEnDB(movie);
+                        } else {
+                            System.out.println(
+                                    "La pelicula no esta en la base de datos de imdb y no puede ser introducida en la base de datos de movies_db");
+                        }
                     }
-                    if (ComprobarPelicula(nombrePelicula)) {
-                        Movie movie = getMovieInfo(nombrePelicula);
-                        GuardarPeliculasEnDB(movie);
-                        PrintePeliculas(movie);
-                    } else {
-                        System.out.println(
-                                "La pelicula no esta en la base de datos de imdb y no puede ser introducida en la base de datos de movies_db");
+                    break;
+                case 2:
+                    List<String> movieTitles = Arrays.asList("Harry Potter and the Philosopher's Stone",
+                            "Harry Potter and the Chamber of Secrets", "Harry Potter and the Prisoner of Azkaban",
+                            "Harry Potter and the Goblet of Fire", "Harry Potter and the Order of the Phoenix",
+                            "Harry Potter and the Half-Blood Prince", "Harry Potter and the Deathly Hallows – Part 1",
+                            "Harry Potter and the Deathly Hallows – Part 2");
+                    for (String movieTitle : movieTitles) {
+                        if (ComprobarPelicula(movieTitle)) {
+                            Movie movie = getMovieInfo(movieTitle);
+                            GuardarPeliculasEnDB(movie);
+                        }
                     }
-                }
-                break;
-            case 2:
-                List<String> movieTitles = Arrays.asList("Harry Potter and the Philosopher's Stone",
-                        "Harry Potter and the Chamber of Secrets", "Harry Potter and the Prisoner of Azkaban",
-                        "Harry Potter and the Goblet of Fire", "Harry Potter and the Order of the Phoenix",
-                        "Harry Potter and the Half-Blood Prince", "Harry Potter and the Deathly Hallows – Part 1",
-                        "Harry Potter and the Deathly Hallows – Part 2");
-                for (String movieTitle : movieTitles) {
-                    if (ComprobarPelicula(movieTitle)) {
-                        Movie movie = getMovieInfo(movieTitle);
-                        GuardarPeliculasEnDB(movie);
+                    break;
+                case 3:
+                    System.out.println("Ingrese el nombre de la pelicula: ");
+                    String nombrePeliculaConAño = readLine.nextLine();
+                    System.out.println("Ingrese el año inicial: ");
+                    int añoInicial = readLine.nextInt();
+                    System.out.println("Ingrese el año final: ");
+                    int añoFinal = readLine.nextInt();
+                    for (int año = añoInicial; año <= añoFinal; año++) {
+                        if (ComprobarPelicula(nombrePeliculaConAño, año)) {
+                            Movie movie = getMovieInfo(nombrePeliculaConAño, año);
+                            GuardarPeliculasEnDB(movie);
+                        }
                     }
-                }
-                break;
-            case 3:
-                System.out.println("Ingrese el nombre de la pelicula: ");
-                String nombrePeliculaConAño = readLine.nextLine();
-                System.out.println("Ingrese el año inicial: ");
-                int añoInicial = readLine.nextInt();
-                System.out.println("Ingrese el año final: ");
-                int añoFinal = readLine.nextInt();
-                for (int año = añoInicial; año <= añoFinal; año++) {
-                    if (ComprobarPelicula(nombrePeliculaConAño, año)) {
-                        Movie movie = getMovieInfo(nombrePeliculaConAño, año);
-                        GuardarPeliculasEnDB(movie);
-                    }
-                }
-                break;
-            case 4:
-                mostrarTodasLasPeliculas();
-                break;
-            case 5:
-                System.out.println("Ingrese el título de la película: ");
-                String titulo = readLine.nextLine();
-                filtrarPeliculasPorTitulo(titulo);
-                break;
-            case 6:
-                System.out.println("Saliendo del programa...");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Opción no válida");
-                break;
+                    break;
+                case 4:
+                    mostrarTodasLasPeliculas();
+                    break;
+                case 5:
+                    System.out.println("Ingrese el título de la película: ");
+                    String titulo = readLine.nextLine();
+                    filtrarPeliculasPorTitulo(titulo);
+                    break;
+                case 6:
+                    System.out.println("Saliendo del programa...");
+
+                    System.exit(0);
+                    break;
+                default:
+                    readLine.close();
+                    System.out.println("Opción no válida");
+                    break;
+
+            }
+
         }
-        readLine.close();
 
     }
 
